@@ -8,6 +8,7 @@ var trim = require('trim-whitespace');
 
 var commentModel = require("../models/comment.js");
 var newModel = require("../models/new.js");
+var saveModel = require("../models/saveArticle.js");
 mongoose.set('useFindAndModify', false);
 const news = "https://www.nytimes.com/section/technology"
 
@@ -20,7 +21,14 @@ router.delete("/scrapeNews", (req, res)=> {
 
 router.get("/scrapeNews", (req, res)=> {
 	var model = new newModel();
-	newModel.find({},{}, {limit:20, title: 'asc'}, (error, response)=>{
+	newModel.find({}).sort({_id:-1}).exec((error, response) => {
+		res.send(response);
+	});
+});
+
+router.get("/scrapeNews/:id", (req, res)=> {
+	var id = req.params.id;
+	newModel.findOne({_id:id}, (error, response) => {
 		res.send(response);
 	});
 });
@@ -47,12 +55,35 @@ router.get("/comments/:newsId", (req, res)=>{
 
 });
 
-router.delete("/comments/:id", (req, res)=>{
+router.post("/saves", (req, res)=>{
+	var article = req.body || {};
+	if(article){
+		console.log(article);
+		saveModel.findOneAndUpdate({link:article.link}, article, {upsert: true, new:true}, (err, response)=>{
+			res.status(201).send("Article saved!");
+		});
+	}
+});
+
+router.get("/saves",(req, res)=>{
+	saveModel.find({}, (err, response)=>{
+		res.status(200).send(response);
+	});
+});
+
+router.delete("/saves/:id", (req, res)=>{
+	var id = req.params.id || "";
+	saveModel.deleteOne({_id:id}, (err, response)=>{
+		res.send(response);
+	} );
+});
+
+router.delete("/comments/:id", async (req, res)=>{
 	var commentId = req.params.id;
 	if(!commentId){
 		return res.send("Error: Invalid comment!");
 	}
-	newModel.findOneAndUpdate({_id:req.body.id},{$pull:{"comments":commentId}}, {upsert:true, new: true},(err, response)=>{
+	await newModel.findOneAndUpdate({_id:req.body._id},{$pull:{"comments":commentId}}, {upsert:true, new: true},(err, response)=>{
 		if(err) return res.send(err);
 
 	});
