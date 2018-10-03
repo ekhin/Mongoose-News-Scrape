@@ -17,8 +17,8 @@ app.set("view engine", "handlebars");
 
 var apiRoute = require("./controllers/apiRoutes.js");
 var htmlRoute = require("./controllers/htmlRoutes.js");
-if(process.env.MONGODB_URL){
-	mongoose.connect(process.env.MONGODB_URL, (err, connect) =>{
+if(process.env.MONGODB_URI){
+	mongoose.connect(process.env.MONGODB_URI, (err, connect) =>{
 		if(err) return console.log("Connection error: " + err);
 		console.log("MongoDB connection success");
 	});
