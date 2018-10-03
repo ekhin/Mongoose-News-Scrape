@@ -102,16 +102,16 @@ $(document).ready(function(){
 			for(var i=0; i< res.length; i++){
 				var eachRow = "<div class='card w-75'><div class='card-body'>" + 
 					"<button class='delete deleteButton' style='float: right;' id='"+res[i]._id+"'>delete article</button>"+
-					"<button class='save saveButton' style='float: right;' id='"+res[i]._id+"' value='"+JSON.stringify(res[i])+"'>save article</button>"+
+					// "<button class='save saveButton' style='float: right;' id='"+res[i]._id+"' value='"+JSON.stringify(res[i])+"'>save article</button>"+
 					"<img class='images' src='"+res[i].img+"'>" +
 					"<h4 class='card-title'>"+res[i].title+"</h4>" +
 					"<p class='card-text'>"+res[i].summary+"</p>"+
 					"<p >" + res[i].byline + "</p>" +
-					"<a class='link' href="+res[i].link+">click here to read more!</a><br>" +
-					"<label>comment: </label> &nbsp&nbsp <input type='text' id='"+i+"'>"+
-					"<button class='submit writeComments' id='"+res[i]._id+ " "+ i+"'>submit</button>" +
-					"&nbsp&nbsp"+
-					"<button class='submit readComments' id='"+res[i]._id+"' value='"+res[i].comments+"' >Read comments</button>"
+					"<a class='link' href="+res[i].link+">click here to read more!</a><br>";
+					// "<label>comment: </label> &nbsp&nbsp <input type='text' id='"+i+"'>"+
+					// "<button class='submit writeComments' id='"+res[i]._id+ " "+ i+"'>submit</button>" +
+					// "&nbsp&nbsp"+
+					// "<button class='submit readComments' id='"+res[i]._id+"' value='"+res[i].comments+"' >Read comments</button>"
 					card.append(eachRow);
 
 			}
